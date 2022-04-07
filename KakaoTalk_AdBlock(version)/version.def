@@ -1,0 +1,13 @@
+LIBRARY
+
+EXPORTS
+	GetFileVersionInfoSizeA
+	GetFileVersionInfoSizeW
+	GetFileVersionInfoSizeExA
+	GetFileVersionInfoSizeExW
+	GetFileVersionInfoA
+	GetFileVersionInfoW
+	GetFileVersionInfoExA
+	GetFileVersionInfoExW
+	VerQueryValueA
+	VerQueryValueW
