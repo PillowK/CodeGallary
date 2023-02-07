@@ -118,14 +118,15 @@ namespace DirectoryWatcher
                         });
 
 
-                        GC.Collect();
-                        await Task.Delay(1000 * 60 * _interval, stoppingToken);
-                    }
+                        GC.Collect();                        
+                    }                    
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.ToString());
                 }
+
+                await Task.Delay(1000 * 60 * _interval, stoppingToken);
             }
         }
     }
