@@ -8,17 +8,20 @@ namespace DirectoryWatcher
 {
     public class DirectoryWatchWorker : BackgroundService
     {
+        private readonly int _interval = 1;
         private readonly ILogger<DirectoryWatchWorker> _logger;
         private List<FileSystemWatcher> _watchers = new List<FileSystemWatcher>();
-        private List<RunItem> _runners = new List<RunItem>();
+        private List<RunItem> _runners = new List<RunItem>();        
         private List<string> _ignores = new List<string>();
-        private ConcurrentDictionary<string, RunItem> runnings = new ConcurrentDictionary<string, RunItem>();
+        private ConcurrentDictionary<string, RunItem> _runnings = new ConcurrentDictionary<string, RunItem>();
+        private ConcurrentQueue<string> _changes = new ConcurrentQueue<string>();
 
         public DirectoryWatchWorker(
             ILogger<DirectoryWatchWorker> logger,
             IConfiguration configuration)
         {
             _logger = logger;
+            _interval = configuration.GetValue("Settings:runnerInterval", 1);
 
             List<string> watchPathes = configuration.GetSection("Watch")
                 .AsEnumerable()
@@ -61,46 +64,13 @@ namespace DirectoryWatcher
         {            
             if (_ignores.Contains(e.Name.ToLower()))
                 return;            
-
-            var watcher = sender as FileSystemWatcher;
-            _logger.LogInformation($"Detect: {e.FullPath}:{e.ChangeType}");
             
+            _logger.LogInformation($"Detect: {e.FullPath}:{e.ChangeType}");
 
-            _runners.ForEach(r =>
+            lock(_changes)
             {
-                try
-                {                  
-                    string commandLine = $"\"{r.Filepath}\" {r.Argument}";
-
-                    if (File.Exists(r.Filepath))
-                    {
-                        ThreadPool.QueueUserWorkItem((a) =>
-                        {
-                            if (runnings.TryAdd(r.RunId, r))
-                            {
-                                _logger.LogInformation($"Run-{r.RunId}: {commandLine}");
-                                ApplicationLoader.PROCESS_INFORMATION procInfo;
-                                ApplicationLoader.StartProcessAndBypassUAC(commandLine, out procInfo);
-
-                                runnings.Remove(r.RunId, out var removed);
-                            }
-                            else
-                            {
-                                _logger.LogInformation($"Run-{r.RunId}: AlreadyRun Skip");
-                            }
-                        });                                                                                           
-                    }
-                    else
-                    {
-                        _logger.LogInformation($"FileNotFound-Skip: {commandLine}");
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.ToString());
-                }
-            });
+                _changes.Enqueue(e.FullPath);
+            }            
         }                
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -109,10 +79,50 @@ namespace DirectoryWatcher
             {
                 try
                 {
-                    GC.Collect();
-                    await Task.Delay(1000 * 60, stoppingToken);
+                    if (_changes.Count > 0)
+                    {
+                        lock(_changes)
+                        {
+                            _changes.Clear();
+                        }
+                        
+                        _runners.ForEach(r =>
+                        {
+                            try
+                            {
+                                string commandLine = $"\"{r.Filepath}\" {r.Argument}";
+
+                                if (File.Exists(r.Filepath))
+                                {
+                                    ThreadPool.QueueUserWorkItem((a) =>
+                                    {
+                                        if (_runnings.TryAdd(r.RunId, r))
+                                        {
+                                            _logger.LogInformation($"Run-{r.RunId}: {commandLine}");
+                                            ApplicationLoader.PROCESS_INFORMATION procInfo;
+                                            ApplicationLoader.StartProcessAndBypassUAC(commandLine, out procInfo);
+
+                                            _runnings.Remove(r.RunId, out var removed);
+                                        }
+                                        else
+                                        {
+                                            _logger.LogInformation($"Run-{r.RunId}: AlreadyRun Skip");
+                                        }
+                                    });
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogError(ex.ToString());
+                            }
+                        });
+
+
+                        GC.Collect();
+                        await Task.Delay(1000 * 60 * _interval, stoppingToken);
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogError(ex.ToString());
                 }
