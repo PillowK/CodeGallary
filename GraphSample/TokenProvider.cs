@@ -31,7 +31,7 @@ namespace GraphSample
 
             var accessToken = await this.Application.AcquireTokenOnBehalfOf(
                 scopeURL,
-                new UserAssertion())
+                new UserAssertion(_userAssert))
                 .ExecuteAsync();
 
             return accessToken.AccessToken;
