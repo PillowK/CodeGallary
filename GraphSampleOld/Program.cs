@@ -13,10 +13,11 @@ namespace GraphSample
 {
     class Program
     {
-        static string appId = "3b94e9a7-086f-4566-b359-bbdca7d08ddf";
-        static string tenentId = "0f7b4e1c-344e-4923-aaf0-6fca9e6700c8";
-        static string userName = "hcc_teams_admin@hanwha.com";
-        static string password = "hcc1234!@#$";
+        static string appId = "{ClientId}";
+        static string tenentId = "{TenentId}";
+        static string appSecret = "{AppSecret}";
+        static string userName = "{UserPrincipalName}";
+        static string password = "{UserPassword}";
         static void Main(string[] args)
         {
             CallCertificate();
@@ -41,8 +42,8 @@ namespace GraphSample
 
 
             IConfidentialClientApplication confidentialClient = ConfidentialClientApplicationBuilder
-                .Create("175dea63-f81e-42c6-90c4-cc04ac9bcf85")
-                .WithTenantId("60bf846f-b960-4abf-b752-5086ae3870a8")
+                .Create(appId)
+                .WithTenantId(tenentId)
                 .WithCertificate(appcert)
                 .Build();
 
@@ -63,7 +64,7 @@ namespace GraphSample
             IConfidentialClientApplication confidentialClient = ConfidentialClientApplicationBuilder
                 .Create(appId)
                 .WithTenantId(tenentId)
-                .WithClientSecret("EOHjYaR2ixfDfj9Vy4ECfAZvPaNdZbLZn0euqoC196s=")
+                .WithClientSecret(appSecret)
                 .Build();
 
             var token = confidentialClient.AcquireTokenForClient(scopeURL)
@@ -80,7 +81,7 @@ namespace GraphSample
                     }));
 
             var user = await graphClient
-                .Users["202102346@hanwha.com"]
+                .Users[userName]
                 .Request()
                 .Select(u => new
                 {
@@ -131,7 +132,7 @@ namespace GraphSample
                     }));
 
             var user = await graphClient
-                .Users["202102346@hanwha.com"]
+                .Users[userName]
                 .Request()
                 .Select(u => new
                     {
