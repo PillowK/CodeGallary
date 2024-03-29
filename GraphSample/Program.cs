@@ -24,6 +24,11 @@ namespace GraphSample
             //CallClientSecret().GetAwaiter().GetResult();
         }
 
+        static void CallUserAssert()
+        {
+
+        }
+
         static void CallCertificate()
         {
             SecureString secString = new SecureString();
