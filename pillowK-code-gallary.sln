@@ -15,11 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePowershellNet", "Remo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{67C4D2E3-6641-47B6-BB6B-4B8CD3D761AA}"
 	ProjectSection(SolutionItems) = preProject
+		scripts\aes256plain.js = scripts\aes256plain.js
 		scripts\connectionCountUpdate.ps1 = scripts\connectionCountUpdate.ps1
 		scripts\createContextmenu.ps1 = scripts\createContextmenu.ps1
 		scripts\DDNSReflesh.ps1 = scripts\DDNSReflesh.ps1
 		scripts\rdp-password-decrypt.ps1 = scripts\rdp-password-decrypt.ps1
 		scripts\rdp-password-encrypt.ps1 = scripts\rdp-password-encrypt.ps1
+		scripts\rsaplain.js = scripts\rsaplain.js
 		scripts\runvm.ps1 = scripts\runvm.ps1
 		scripts\runvm2.ps1 = scripts\runvm2.ps1
 		scripts\ShowNetworkStatus.ps1 = scripts\ShowNetworkStatus.ps1
@@ -31,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DirectoryWatcher", "Directo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphSampleOld", "GraphSampleOld\GraphSampleOld.csproj", "{58876299-FFEA-405D-8E4C-9E8AE1D1C18D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphSample", "GraphSample\GraphSample.csproj", "{99CE5457-527E-4C9A-97B0-D7B309DF8172}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphSample", "GraphSample\GraphSample.csproj", "{99CE5457-527E-4C9A-97B0-D7B309DF8172}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encryption", "Encryption\Encryption.csproj", "{E44A8D9E-5309-4C38-A69A-15ECF4215490}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,6 +137,18 @@ Global
 		{99CE5457-527E-4C9A-97B0-D7B309DF8172}.Release|x64.Build.0 = Release|Any CPU
 		{99CE5457-527E-4C9A-97B0-D7B309DF8172}.Release|x86.ActiveCfg = Release|Any CPU
 		{99CE5457-527E-4C9A-97B0-D7B309DF8172}.Release|x86.Build.0 = Release|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Debug|x64.Build.0 = Debug|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Debug|x86.Build.0 = Debug|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Release|x64.ActiveCfg = Release|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Release|x64.Build.0 = Release|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Release|x86.ActiveCfg = Release|Any CPU
+		{E44A8D9E-5309-4C38-A69A-15ECF4215490}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
