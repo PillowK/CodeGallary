@@ -10,7 +10,10 @@ string userAssert = "{UserAssertFromTeamsAuth}";
 var authenticationProvider = new BaseBearerTokenAuthenticationProvider(
     new TokenProvider(clientId, tenentId, secret, userAssert));
 
-GraphServiceClient graphClient = new GraphServiceClient(authenticationProvider);
+RequestInterceptor requestInterceptor = new RequestInterceptor();
+HttpClient httpClient = new HttpClient();
+
+GraphServiceClient graphClient = new GraphServiceClient(httpClient, authenticationProvider);
 
 var me = graphClient.Me.GetAsync().GetAwaiter().GetResult();
 var drive = graphClient.Me.Drive.GetAsync()
