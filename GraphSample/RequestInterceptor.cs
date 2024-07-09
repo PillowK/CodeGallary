@@ -10,7 +10,7 @@ namespace GraphSample
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            Console.WriteLine(request.RequestUri);
+            Console.WriteLine($"{request.Method} {request.RequestUri}");
             return base.SendAsync(request, cancellationToken);
         }
     }
