@@ -1,0 +1,105 @@
+{
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "text": "Hi. ${createdBy}",
+      "wrap": true,
+      "type": "TextBlock"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Enter your Information",
+      "style": "heading"
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "80px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Name"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "Input.Text",
+              "placeholder": "Enter your name",
+              "id": "Inp.Name"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "80px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Department"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "Input.Text",
+              "placeholder": "Enter your department",
+              "id": "Inp.Department"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "80px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Company"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "Input.Text",
+              "placeholder": "Enter your company",
+              "id": "Inp.Company"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.Submit",
+          "title": "입력",
+          "id": "Btn.Submit"
+        }
+      ]
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.6"
+}
