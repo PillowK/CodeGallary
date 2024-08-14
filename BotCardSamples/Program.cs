@@ -1,10 +1,12 @@
 using BotCardSamples.Handlers;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Identity.Web;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 IEnumerable<string> initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ');
@@ -29,6 +31,21 @@ builder.Services
         options.Filters.Add(new AuthorizeFilter(policy));
     });
 
+builder.Services.Configure<MicrosoftIdentityOptions>(OpenIdConnectDefaults.AuthenticationScheme,
+    options =>
+    {
+        options.Events.OnTokenValidated += (context) =>
+        {
+            var claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.Name, "NamJi Kwon"));
+
+            var appIdentity = new ClaimsIdentity("Eum");
+            appIdentity.AddClaims(claims);
+
+            context.Principal.AddIdentity(appIdentity);
+            return Task.FromResult(context);
+        };
+    });
 
 var app = builder.Build();
 
