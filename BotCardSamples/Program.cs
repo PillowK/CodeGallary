@@ -39,7 +39,7 @@ builder.Services.Configure<MicrosoftIdentityOptions>(OpenIdConnectDefaults.Authe
             var claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, "NamJi Kwon"));
 
-            var appIdentity = new ClaimsIdentity("Eum");
+            var appIdentity = new ClaimsIdentity("Eum");          
             appIdentity.AddClaims(claims);
 
             context.Principal.AddIdentity(appIdentity);
