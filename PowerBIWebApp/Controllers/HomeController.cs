@@ -11,6 +11,8 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly ITokenAcquisition _tokenAcquisition;
+    private readonly RestClient biClient;
+
     private readonly string[] scopes = new string[] { "https://analysis.windows.net/powerbi/api/.default" };
 
     public HomeController(
@@ -19,17 +21,18 @@ public class HomeController : Controller
     {
         _logger = logger;
         _tokenAcquisition = tokenAcquisition;
+
+        biClient = new RestClient("https://api.powerbi.com/v1.0");
     }
 
     [AuthorizeForScopes(Scopes = new string[] { "https://analysis.windows.net/powerbi/api/.default" })]
     public async Task<IActionResult> Index([FromQuery] string reportId = "ec7ae70b-aad8-44e3-ba6b-ab1ea66d9d64")
-    {        
+    {
         var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(scopes);
-
-        RestClient restClient = new RestClient("https://api.powerbi.com/v1.0");
         RestRequest restRequest = new RestRequest($"/myorg/reports/{reportId}", Method.Get);
         restRequest.AddHeader("Authorization", $"Bearer {accessToken}");
-        RestResponse response = restClient.Execute(restRequest);
+
+        RestResponse response = biClient.Execute(restRequest);
         var reportModel = JsonConvert.DeserializeObject<PowerBIReportModel>(response.Content);
         reportModel.accessToken = accessToken;
         reportModel.TokenType = TokenType.Aad;
