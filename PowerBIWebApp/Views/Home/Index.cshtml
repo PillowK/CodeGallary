@@ -1,0 +1,19 @@
+﻿@model PowerBIReportModel;
+
+<div class="text-center">    
+    <div id="bi-embed"></div>
+    <script src="/js/lib/powerbi.js"></script>
+    <script>    
+        var embedConfig = @Html.Raw(Json.Serialize(@Model));                
+        var embedElem = document.getElementById('bi-embed');        
+        var report = powerbi.embed(embedElem, embedConfig);
+        console.log('report', report);
+    </script>
+</div>
+
+<style>
+    #bi-embed {
+        width: 1024px;
+        height: 768px;        
+    }
+</style>
